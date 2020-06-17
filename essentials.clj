@@ -86,6 +86,11 @@ false
 ;; sqeeze more than one expression into each arm using
 ;; (do <expr1> <expr2> ...)
 
+;; `progn` in common lisp is in clojure `do`
+;; more than one expressions
+(do "expr1"
+    "expr2"
+    "expr3")
 
 
 
@@ -141,12 +146,50 @@ false
 
 
 
+;; lists
+(list 1 "two" {3 4})
+'(1 2 3 4)
+
+(nth '(:a :b :c) 0) ;; => :a
+(nth '(:a :b :c) 2) ;; => :c
+
+(cons 4 '(1 2 3))   ;; => '(4 1 2 3)
+(conj 4 '(1 2 3))   ;; => '(4 1 2 3)
+(rest '(1 2 3))
+;; first
+;; second
+;; last
+
+;; vectors    "faster accessible lists"
+
+(vector "a" "b" "c")
+["a" "b" "c"]
+
+(get [1 2 3] 0)  ;; => 1
+(get ["a" {:name "A. Berg"} "c"] 1)  ;; => {:name "Pugsley Winterbottom"}
+
+;; cons adds at beginning, conj - for vectors - adds at end
+(cons 0 [1 2 3]) ;; => [0 1 2 3]
+(conj 0 [1 2 3]) ;; => [1 2 3 0]   
 
 
+;; sets
+(hash-set 1 1 2 2 3) ;; => #{1 2 3}
+#{:a :a 2 2 2 3} ;; duplicate key
+#{:a 2 2 3 3 3} ;; duplicate key
 
+(cons :d #{:a :b :c}) ;; => #{:d :a :b :c}
+(conj #{:a :b} :b)  ;; => #{:a :b}
+(rest #{:a :b :c}) ;; => (:b :a)
 
-;; `progn` in common lisp is in clojure `do`
-;; more than one expressions
-(do "expr1"
-    "expr2"
-    "expr3")
+(contains? #{:a :b} :a) ;; => true
+(contains? #{:a :b} :c) ;; => false
+(contains? #{nil} nil)  ;; => true
+
+;; get or accessor function return obj if in set else nil
+;; confusing when obj is `nil` ... => contains? is better!
+(get #{:a :b} :a)       ;; => :a
+(:a #{:a :b})           ;; => :a
+;; however:
+(get #{:a :b nil} nil)  ;; =>
+
