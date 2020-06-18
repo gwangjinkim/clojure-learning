@@ -191,5 +191,92 @@ false
 (get #{:a :b} :a)       ;; => :a
 (:a #{:a :b})           ;; => :a
 ;; however:
-(get #{:a :b nil} nil)  ;; =>
+(get #{:a :b nil} nil)   ;; => nil
+(get #{:a :b :d} :c) ;; => nil
+
+
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; functions
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(inc 1.1) ;; => 2. 1
+(map inc [0 1 2 3]) ;; => '(1 2 3 4)
+;; map always returns a list!
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; define a function
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defn func-name
+    "docstring"
+    [] ;; parameter-'list' is a vector in clojure
+    println("Functionbody")
+    println("with implicite `do`"))
+
+;; define multi-arity function
+(defn multi-arity
+    "Multi-arity function"
+    ([arg-1 arg-2 arg-3]
+     (do-things arg-1 arg-2 arg-3))
+    ([arg-1 arg-3]
+     (do-things arg-1 arg-3))
+    ([arg-1 arg-2]
+     (do-things arg-1 arg2))
+    ([arg-1]
+     (do-things arg-1))
+    ([]
+     (do-things)))
+
+;; [a & things] ;;=> things binds rest of the args in a vector
+
+;; destructuring: concisely bind names to values within a collection
+(defn my-first
+    [[first-thing]] ; first-thing within vector captured
+    first-thing)
+
+(defn first-and-rest
+    [[first-thing & rest-things]]
+    [first-thing rest-things])
+;; (first-and-rest '(a b c d e f)) => [a (b c d e f)]
+
+;; keywords
+(defn announce-position
+    [{x :x y :y}]
+    (println (str "The position is x: " x " and y: " y ".")))
+(announce-position {:x 1 :y 2})
+;; => The position is x: 1 and y: 2.
+;; => nil
+
+;; more shortcut:
+(defn announce-position
+    [{:keys [x y]}]
+    (println (str "The position is x: " x " and y: " y ".")))
+
+
+;; anonymous functions
+;; instead of parameterlist naming, use if just one arg: % else: %1, %2, ... and for rest: %&
+;; save the (fn [...] body) and write #(body) using inside body the % place holders
+
+(#(identity %&) 1 "blarg" :yip)
+;; => (1 "blarg" :yip)
+
+;; returning functions
+(defn inc-maker
+    "Create a custom incrementer"
+    [inc-by]
+    #(+ % inc-by))
+
+(def inc3 (ink-maker 3))
+
+(inc3 7) ;;=> 10
+
+
+
+;; optional arguments and optional values?
+
+
 
