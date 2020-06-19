@@ -13,7 +13,6 @@
 ;; lists, vectors, sets, maps
 
 
-
 (defn exclamat [x] (str x "!"))
 
 (map exclamate ["A" "B"])                       ;; => ("A!" "B!")
@@ -42,3 +41,12 @@
 
 
 
+                              
+                              
+                              
+                              
+;; map
+
+(map inc [1 2 3]) ;; => (2 3 4)
+(map str ["a" "b" "c"] ["A" "B" "C"]) ;; => ("aA" "bB" "cC")
+                              
